@@ -1,6 +1,7 @@
 
-let dotenv = require('dotenv').config()
-let inquirer = require('inquirer')
+let dotenv = require('dotenv').config();
+let inquirer = require('inquirer');
+var request = require('request');
 
 // Spotify should be first
 
@@ -25,12 +26,11 @@ let inquirer = require('inquirer')
 // }
 
 
-
+// This function is used to search an artist
  function concertSearch() {
 
     var userSearch = process.argv;
 
-    var request = require('request');
 
     let artist = ""
 
@@ -77,12 +77,12 @@ let inquirer = require('inquirer')
 
     console.log("=======================================================================================================")
 
-    console.log("\nVenue: " + venue);
-    console.log("\nCity", city)
-    console.log("\nDate: ", dateEvent)
-    console.log("\nLineup: ", lineUp)
-    console.log("\nLatitude: " + latitude);
-    console.log("\nLongitude: " + longitude);
+    console.log("\n || Venue: " + venue);
+    console.log("\n || City", city)
+    console.log("\n || Date: ", dateEvent)
+    console.log("\n || Lineup: ", lineUp)
+    console.log("\n || Latitude: " + latitude);
+    console.log("\n || Longitude: " + longitude);
     console.log("--------------------------------------");
   }
 
@@ -90,4 +90,66 @@ let inquirer = require('inquirer')
 
 };
 
-concertSearch();
+// concertSearch();
+
+// This is the start of the program for searching Movie information
+function movieSearch() {
+
+var userSearch = process.argv;
+
+let movie = "";
+
+
+
+for (var i = 2; i < userSearch.length; i++) {
+
+    if (i > 2 && i < userSearch.length) {
+  
+      movie = movie + "+" + userSearch[i];
+  
+    }
+  
+    else {
+  
+      movie += userSearch[i];
+  
+    }
+  }
+
+let queryURL ="http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=ae1476de" 
+
+console.log(queryURL)
+
+request(queryURL, function(error, response, body) {
+    body = JSON.parse(body)
+
+  // If there were no errors and the response code was 200 (i.e. the request was successful)...
+  if (!error && response.statusCode === 200) {
+      
+
+    // Then we print out the imdbRating
+
+    console.log(body)
+
+
+    // * Title of the movie.
+    console.log("\n || The movie's title is: " + body.Title)
+    // * Year the movie came out.
+    console.log("\n || " +body.Title+ "  was first released in: " + body.Year)
+    // * IMDB Rating of the movie.
+    console.log("\n || " +body.Title+ " was rated a: " + body.imdbRating);
+    // * Rotten Tomatoes Rating of the movie.
+    console.log("\n || " +body.Title+ "  was given a rating of " + body.Ratings[1].Source+" BIG FUCK YOU PROBLEM" + " by Rotten Tomatoes") // Having issues getting the Rotten Tomatoes rating out of the Object ||
+    // * Country where the movie was produced.
+    console.log("\n || " +body.Title+ "  was produced in: " + body.Country)
+    // * Language of the movie.
+    console.log("\n || " +body.Title+ " was produced in the following langauges: " +body.Language)
+    // * Plot of the movie.
+    console.log("\n || " +body.Title+ " is about " + body.Plot)
+    // * Actors in the movie.
+    console.log("\n || " +body.Title+"'s talented cast includes: " + body.Actors)
+  }
+})
+};
+
+// movieSearch();
