@@ -79,7 +79,9 @@ let Liri = function () {
           "|| Longitude: " + this.longitude].join("\n \n");
   
           fs.appendFile("log.txt",divder + "\n \n" + this.concertInfo + "\n \n" + divder, function(err) {
+
             if (err) throw err;
+            
             });
   
   
@@ -146,7 +148,7 @@ let Liri = function () {
   
       let queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=ae1476de"
   
-      console.log(queryURL)
+      // console.log(queryURL)
   
       request(queryURL, function (error, response, body) {
   

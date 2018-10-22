@@ -172,10 +172,16 @@ search
         }
       
         // Break the string down by comma separation and store the contents into the output array.
-
+        
         var output = data.split(",");
 
-        let userSearch = output[1];
+        // Create random number based off the list of random songs within random.txt
+
+        let random = Math.floor((Math.random() * output.length));
+
+        // console.log(random)
+
+        let userSearch = output[random];
 
 
       liri.songs(userSearch)
